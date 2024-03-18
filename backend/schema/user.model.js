@@ -1,6 +1,11 @@
 import {Schema,model} from "mongoose";
 
 const userSchema = new Schema({
+  email:{
+    type:String,
+    required:true,
+    index:true
+  },
   firstName:{
     type:String,
     required:true
@@ -15,7 +20,8 @@ const userSchema = new Schema({
   },
   status:{
     type:Boolean,
-    default:true
+    default:true,
+    index:true
   }
 },
 {

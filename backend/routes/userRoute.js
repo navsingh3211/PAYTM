@@ -8,7 +8,7 @@ const routes = ()=>{
       message:"welcome to payTm app."
     })
   });
-  router.get('/register',registerUser);
+  router.post('/register',registerUser);
   return router;
 }
 

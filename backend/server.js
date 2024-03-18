@@ -6,6 +6,7 @@ import routes from './routes/userRoute.js';
 const app = express();
 
 dotenv.config('');
+app.use(express.json());
 
 const PORT = process.env.PORT || 8085;
 const MONGO_URL = process.env.MONGO_URL;
