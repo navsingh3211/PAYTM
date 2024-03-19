@@ -2,6 +2,7 @@
 import express from 'express';
 const router = express.Router();
 import userRoute from './userRoute.js';
+import accountRoute from './accountRoute.js';
 
 /**
  * Function contains Application routes
@@ -15,7 +16,7 @@ const routes = () => {
     })
   });
   router.use('/user', userRoute);
-  // router.use('/admin/inventory/category', categoryRoute);
+  router.use('/account', accountRoute);
   return router;
 };
 

@@ -31,3 +31,10 @@ export const userUpdateValidation = zod.object({
   lastName:zod.string().optional(),
   password:zod.string().optional()
 });
+
+export const transferMoneyValidation = zod.object({
+  to:zod.string().refine((val)=>val.trim().length>0,{
+      message:'Please enter the to'
+    }),
+  amount:zod.number()
+});
