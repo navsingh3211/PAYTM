@@ -25,3 +25,9 @@ export const userLoginValidation = zod.object({
     message:'Please enter the password'
   })
 });
+
+export const userUpdateValidation = zod.object({
+  firstName:zod.string().optional(),
+  lastName:zod.string().optional(),
+  password:zod.string().optional()
+});

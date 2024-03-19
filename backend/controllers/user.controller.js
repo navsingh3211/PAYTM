@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import User from '../schema/user.model.js';
 import {
     userRegisterValidation,
-    userLoginValidation
+    userLoginValidation,
+    userUpdateValidation
 } from '../utils/userValidation.js';
 
 export const registerUser = async (req,res,next)=>{
@@ -35,13 +36,13 @@ export const registerUser = async (req,res,next)=>{
     const encryptedPassword = await bcrypt.hash(body.password,10);
     // console.log(await bcrypt.compare(body.password,encryptedPassword));
     body.password=encryptedPassword;
-    await User.create(body);
+    const user = await User.create(body);
 
     /*4.) generate the jwt token*/
     const JWT_KEY = process.env.JWT_SECRET_KEY;
 
     const token = jwt.sign(
-      {email:body.email,firstName:body.firstName},
+      {userId:user._id},
       JWT_KEY,
       {expiresIn:"10d"}
     );
@@ -92,8 +93,7 @@ export const loginUser = async (req,res,next)=>{
     if(isPasswordCorrect){
       const JWT_KEY = process.env.JWT_SECRET_KEY;
       const jwtData = {
-        email:body.email,
-        firstName:userDetails.firstName
+        userId:userDetails._id
       }
       const token = jwt.sign(jwtData,JWT_KEY,{expiresIn:"10d"});
 
@@ -111,6 +111,74 @@ export const loginUser = async (req,res,next)=>{
         message:'Password is incorrect.'
       });
     }
+  }catch(error){
+    console.log(error);
+  }
+}
+
+export const updateUserInfo = async( req,res,next)=>{
+  try{  
+    const body = req.body;
+    const userId = req.tokenDecodedData.userId;
+    
+    /*Validate the payload*/
+    const payloadParse = userUpdateValidation.safeParse(body);
+    if(!payloadParse.success){
+      res.status(411).json({
+        success:false,
+        message:payloadParse.error.errors[0].message
+      });
+    }
+
+    /*updating user details*/
+    if(body && body.password){
+      const encryptPassword = await bcrypt.hash(body.password,10);
+      body.password=encryptPassword;
+    }
+    
+    await User.updateOne({_id:userId},{
+      $set:{
+        firstName:body.firstName,
+        lastName:body.lastName,
+        password:body.password
+      }
+    })
+    res.status(200).json({
+      success:true,
+      message:"User information has been updated successfully",
+      data:null
+    })
+  }catch(error){
+    console.log(error);
+  }
+}
+
+export const getAllUser = async (req,res,next)=>{
+  try{
+    const searchKey = req.query.searchKey ? req.query.searchKey : '';
+    const searchRegExp = new RegExp(searchKey, 'i'); // 'i' flag makes the search case-insensitive
+
+    const getAllUsers = await User.find({
+      status:true,
+      $or: [
+        { firstName: searchRegExp },
+        { lastName: searchRegExp },
+    ]
+    },{
+      email:1,
+      firstName:1,
+      lastName:1,
+      createdAt:1,
+      updatedAt:1
+    });
+    // console.log(getAllUsers[0].password);
+    // process.exit(0)
+    const msg = getAllUsers.length >0 ? 'User Found!' :'User not found!'
+    res.status(200).json({
+      success:true,
+      message:msg,
+      data:getAllUsers
+    })
   }catch(error){
     console.log(error);
   }

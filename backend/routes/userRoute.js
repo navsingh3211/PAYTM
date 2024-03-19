@@ -1,5 +1,12 @@
 import express from 'express';
-import {registerUser,loginUser} from '../controllers/user.controller.js';
+import {
+  registerUser,
+  loginUser,
+  updateUserInfo,
+  getAllUser
+} from '../controllers/user.controller.js';
+import {verifyToken} from '../middlewares/auth_middleware.js';
+
 const router = express.Router();
 
 const routes = ()=>{
@@ -10,6 +17,8 @@ const routes = ()=>{
   });
   router.post('/register',registerUser);
   router.post('/login',loginUser);
+  router.put('/update-user-info',verifyToken,updateUserInfo);
+  router.get('/user/bulk',getAllUser);
   return router;
 }
 
