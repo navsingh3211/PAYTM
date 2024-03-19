@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../schema/user.model.js';
+import Account from '../schema/account.model.js';
+
 import {
     userRegisterValidation,
     userLoginValidation,
@@ -38,7 +40,14 @@ export const registerUser = async (req,res,next)=>{
     body.password=encryptedPassword;
     const user = await User.create(body);
 
-    /*4.) generate the jwt token*/
+    /*4.) Assign free coin on signUp*/
+    const randomCoin = Math.floor(Math.random() * 10000) + 1;
+    await Account.create({
+      userId:user._id,
+      balance:randomCoin
+    })
+
+    /*5.) generate the jwt token*/
     const JWT_KEY = process.env.JWT_SECRET_KEY;
 
     const token = jwt.sign(
