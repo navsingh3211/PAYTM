@@ -16,3 +16,12 @@ export const userRegisterValidation = zod.object({
     })
 
 });
+
+export const userLoginValidation = zod.object({
+  email:zod.string().refine((val)=>val.trim().length>0,{
+    message:'Please enter the email'
+  }),
+  password:zod.string().refine((val)=>val.trim().length>0,{
+    message:'Please enter the password'
+  })
+});
