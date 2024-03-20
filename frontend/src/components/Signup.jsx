@@ -26,7 +26,7 @@ export default function Signup() {
       "password":password
     }
     if(!formData.email || !formData.firstName || !formData.lastName || !formData.password){
-      setErrorMsg('Plase enter all fields');
+      setErrorMsg('Please enter all fields');
       // alert('Plase enter all fields');
       return;
     }

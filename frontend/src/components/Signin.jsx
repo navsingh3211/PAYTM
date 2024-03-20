@@ -12,10 +12,41 @@ import Typography from '@mui/material/Typography';
 export default function Signin() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  const [errorMsg,setErrorMsg] = useState('');
+  const [successPopup,setSuccessPopup] = useState(false);
+  const [valErrorMsg,setValErrorMsg] = useState('');
 
   const navigate = useNavigate();
-  function LoginHandler(){
-    
+  const LoginHandler = async(e)=>{
+    e.preventDefault();
+    let formData = {
+      "email":email,
+      "password":password
+    }
+    if(!formData.email || !formData.password){
+      setErrorMsg('Please enter all fields');
+      // alert('Plase enter all fields');
+      return;
+    }
+
+    try{
+      const response = await axios.post('http://13.201.126.18:8085/api/v1/user/login', formData);
+
+      if(response.data.success){
+        
+        setSuccessPopup(true);
+        setErrorMsg('');
+        setTimeout(() => {
+          navigate('/dashboard'); 
+        }, 2000);
+      }else{
+        setValErrorMsg(response.data.message);
+      }
+    }catch(error){
+      setTimeout(()=>{
+        navigate('/error');
+      },2000);
+    }
   }
   
   function redirectFunc(){
@@ -43,11 +74,23 @@ export default function Signin() {
         <button type="submit" onClick={LoginHandler}
           className="bg-black text-white border-2 font-bold m-5 px-10 py-px rounded-lg">Sign In</button>
         <br></br>
-      
+        <label className="text-red-500">{errorMsg}</label><br></br>
+        <label className="text-red-500">{valErrorMsg}</label><br></br>
         <label className="pt-0">Don't have an account? <a href="#" className="underline" onClick={redirectFunc}>Sign Up</a></label>
-
       </div>
     </div>
+    <Modal
+        open={successPopup}
+        onClose={() => setSuccessPopup(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Login Successful
+          </Typography>
+        </Box>
+      </Modal>
       
     </>
   );
