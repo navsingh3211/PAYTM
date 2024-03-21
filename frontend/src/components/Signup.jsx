@@ -33,10 +33,11 @@ export default function Signup() {
 
     try{
     
-      const response = await axios.post('http://13.201.126.18:8085/api/v1/user/register', formData);
+      const response = await axios.post('http://13.126.161.186:8085/api/v1/user/register', formData);
 
       if(response.data.success){
-        
+        localStorage.setItem('token', response.data.data.token);
+        localStorage.setItem('username', response.data.data.userName);
         setSuccessPopup(true);
         setErrorMsg('');
         setTimeout(() => {
