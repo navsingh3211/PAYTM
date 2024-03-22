@@ -4,6 +4,7 @@ import axios from 'axios';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import {Button} from './subComponents/button'
 
 
 export default function Signup() {
@@ -80,8 +81,9 @@ export default function Signup() {
         <input onChange={(e)=>setPassword(e.target.value)}  
         id="ps" type="text" placeholder="Enter password" className="border-gray-600 border-2 rounded-lg"/><br />
         
-        <button type="submit" onClick={signupHandler}
-        className="bg-black text-white border-2 font-bold m-5 px-10 py-px rounded-lg">Sign up</button>
+        {/* <button type="submit" onClick={signupHandler}
+        className="bg-black text-white border-2 font-bold m-5 px-10 py-px rounded-lg">Sign up</button> */}
+        <Button label='Sign up' onClick={signupHandler}/>
         <br></br>
         <label className="text-red-500">{errorMsg}</label><br></br>
         <label className="text-red-500">{valErrorMsg}</label><br></br>
