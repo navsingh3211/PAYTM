@@ -87,7 +87,7 @@ export default function Signup() {
         <br></br>
         <label className="text-red-500">{errorMsg}</label><br></br>
         <label className="text-red-500">{valErrorMsg}</label><br></br>
-        <label className="pt-0">Already have an account? <a href="#" className="underline" onClick={redirectFunc}>Login</a></label>
+        <label className="pt-0">Already have an account? <a href="" className="underline" onClick={redirectFunc}>Login</a></label>
       </div>
     </div>
       <Modal

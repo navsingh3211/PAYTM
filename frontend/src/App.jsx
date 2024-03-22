@@ -14,9 +14,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/dashboard' element={<Dashboard/>}/>
-            <Route path='/signup' element={<Suspense fallback={"loading..."}><Signup/></Suspense>}/>
-            
-            {/* <Route path='/signup' element={<Signup/>}/> */}
+            <Route path='/' element={<Suspense fallback={"loading..."}><Signup/></Suspense>}/>
+            {/* <Route path='/signup' element={<Suspense fallback={"loading..."}><Signup/></Suspense>}/> */}
 
             <Route path='/signin' element={<Signin/>}/>
             <Route path='/send' element={<SendMoney/>}/>

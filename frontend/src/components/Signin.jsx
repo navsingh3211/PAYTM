@@ -52,7 +52,7 @@ export default function Signin() {
   }
   
   function redirectFunc(){
-    navigate('/signup');
+    navigate('/');
   }
   
   return (
@@ -78,7 +78,7 @@ export default function Signin() {
         <br></br>
         <label className="text-red-500">{errorMsg}</label><br></br>
         <label className="text-red-500">{valErrorMsg}</label><br></br>
-        <label className="pt-0">Don't have an account? <a href="#" className="underline" onClick={redirectFunc}>Sign Up</a></label>
+        <label className="pt-0">Don't have an account? <a href="" className="underline" onClick={redirectFunc}>Sign Up</a></label>
       </div>
     </div>
     <Modal
